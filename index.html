@@ -176,6 +176,16 @@ header .btn{height:42px;padding:0 20px;font-size:14px}
 .vc.loud .play{background:var(--grad);color:#0B0B0C}
 .vc .again{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);height:52px;padding:0 24px;border-radius:99px;background:var(--grad);color:#0B0B0C;font-weight:800;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
 .vc.done .again{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+@media(max-width:860px){
+ .vc{aspect-ratio:auto;overflow:visible;background:none;box-shadow:none;border-radius:0}
+ .vc video{aspect-ratio:16/10;height:auto;border-radius:20px;box-shadow:0 24px 50px rgba(0,0,0,.45);background:#111}
+ .vc .cap{position:relative;left:auto;right:auto;bottom:auto;margin-top:12px;min-height:84px;opacity:1;transform:none;background:#141416;font-size:15px}
+ .vc .cap:not(.on){color:transparent}
+ .vc .again{top:calc((100vw - 2*var(--pad))*.31)}
+ #film video{inset:20vh 0 auto 0;height:44vh;object-fit:cover;border-radius:0}
+ #film .sh{background:linear-gradient(180deg,#0B0B0C 18%,transparent 23%,transparent 61%,#0B0B0C 66%)}
+ #film .w h2{font-size:clamp(40px,12vw,64px);left:var(--pad);right:var(--pad);top:auto;bottom:11vh}
+}
 /* Sun */
 .sun{position:relative;min-height:100vh;padding:120px var(--pad) 100px;overflow:hidden;transition:background .1s}
 .sun .sky{position:absolute;inset:0;z-index:0}
