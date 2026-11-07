@@ -353,7 +353,7 @@ footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;m
     <div class="pn" data-v="technik"><div class="no">01</div><div class="copy"><span class="kick">Die Technik</span><h3>Blendet nicht. <em class="g">Wirkt trotzdem.</em></h3><ul class="facts"><li>Ein ePaper-Schild reflektiert Tageslicht wie Papier. Kein eigenes Licht.</li><li>Je heller die Sonne, desto besser lesbar.</li><li>Für den Straßenverkehr geeignet, ein Gutachten liegt vor.</li></ul></div><div class="vc tilt" data-cursor="hov"></div></div>
     <div class="pn" data-v="flotte"><div class="no">02</div><div class="copy"><span class="kick">Die Flotten</span><h3>Fährt dahin, <em class="g">wo deine Kunden sind.</em></h3><ul class="facts"><li>Flotten aus Pflege, Handwerk, Kurier und Taxi.</li><li>Du wählst Branche und Gebiet.</li><li>Dein Motiv läuft 3 Minuten am Stück, im Wechsel mit anderen Werbepartnern.</li></ul></div><div class="vc tilt" data-cursor="hov"></div></div>
     <div class="pn" data-v="motiv"><div class="no">03</div><div class="copy"><span class="kick">Dein Motiv</span><h3>Neues Motiv <em class="g">in Sekunden.</em></h3><ul class="facts"><li>Wochenangebot, Öffnungszeiten, Saisonaktion.</li><li>Digital gewechselt, keine Folie, kein Bekleben.</li><li>Du schickst das Motiv, wir spielen es aus.</li></ul></div><div class="vc tilt" data-cursor="hov"></div></div>
-    <div class="pn" data-v="preise"><div class="no">04</div><div class="copy"><span class="kick">Der Preis</span><h3>Ab 59 € pro Fahrzeug <em class="g">und Monat.</em></h3><ul class="facts"><li>Klare Preise, keine Mindestflotte.</li><li>Laufzeit und Gebiet bestimmst du.</li><li>Unten rechnest du deine Kampagne selbst aus.</li></ul></div><div class="vc tilt" data-cursor="hov"></div></div>
+    <div class="pn" data-v="preise"><div class="no">04</div><div class="copy"><span class="kick">Der Preis</span><h3>Ab 59 € <em class="g">im Monat.</em></h3><ul class="facts"><li>Ein klarer Preis für deinen Werbeslot.</li><li>Laufzeit und Gebiet bestimmst du.</li><li>Unten rechnest du deine Kampagne selbst aus.</li></ul></div><div class="vc tilt" data-cursor="hov"></div></div>
   </div>
   <div class="prog"><b id="hprog"></b></div>
 </section>
@@ -412,14 +412,14 @@ footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;m
   <div class="in">
     <div>
       <span class="kick">Preise</span>
-      <h2>Ab 59 € pro Fahrzeug <em class="g">und Monat.</em></h2>
-      <p class="lead">Klare Preise, keine Mindestflotte. Zieh die Regler und sieh deine Flotte wachsen.</p>
-      <div class="sl"><div class="top"><span>Fahrzeuge</span><b id="pn">10</b></div><input type="range" id="rn" min="1" max="50" value="10"></div>
+      <h2>Ab 59 € <em class="g">im Monat.</em></h2>
+      <p class="lead">Ein klarer Preis für deinen Werbeslot. Zieh den Regler und sieh, was deine Kampagne kostet.</p>
+      
       <div class="sl"><div class="top"><span>Laufzeit</span><b id="pm">6 Monate</b></div><input type="range" id="rm" min="1" max="12" value="6"></div>
     </div>
     <div>
-      <div class="fleetgrid" id="fg"></div>
-      <div class="total"><small>Deine Kampagne</small><div class="big"><em class="g" id="pt">ab 3.540 €</em></div><div class="fine">Der genaue Preis hängt von Gebiet, Laufzeit und Anzahl der Fahrzeuge ab.</div><div style="margin-top:24px"><a class="btn mag" href="#kontakt">Slot reservieren</a></div></div>
+      
+      <div class="total"><small>Deine Kampagne</small><div class="big"><em class="g" id="pt">ab 354 €</em></div><div class="fine">Der genaue Preis hängt von Gebiet und Laufzeit ab.</div><div style="margin-top:24px"><a class="btn mag" href="#kontakt">Slot reservieren</a></div></div>
     </div>
   </div>
 </section>
@@ -669,7 +669,7 @@ const VD={
  technik:{s:'media/c2s.mp4',sp:[0.4,7.4],lines:[['Lumi','Ich leuchte nicht, ich reflektiere. Deshalb blende ich niemanden. Und in der Sonne sieht man mich sogar besser.']]},
  flotte:{s:'media/c3s.mp4',sp:[0.3,7.4],lines:[['Addi','Wir sind jeden Tag in der ganzen Stadt unterwegs. Pflegedienste, Handwerker, Kuriere. Und dein Motiv fährt einfach mit.']]},
  motiv:{s:'media/c4s.mp4',sp:[0.2,7.6],lines:[['Lumi','Neue Aktion? Neues Motiv. Wird digital gewechselt, keiner muss was neu bekleben.']]},
- preise:{s:'media/c5s.mp4',sp:[1.1,6.8],lines:[['Lumi','Und das Beste? Ab 59 Euro pro Fahrzeug und Monat.'],['Addi','Ja. Wirklich.']]},
+ preise:{s:'media/c5s.mp4',sp:[1.1,6.8],lines:[['Lumi','Und das Beste? Ab 59 Euro im Monat.'],['Addi','Ja. Wirklich.']]},
  los:{s:'media/c6s.mp4',sp:[0.3,3.6],lines:[['Lumi','Genug geredet. Und jetzt du.']]}};
 const VC=[];let curVC=null;
 const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="wv" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="mx" d="m16 9 6 6m0-6-6 6"/></svg>';
@@ -770,14 +770,13 @@ studio(false);
 if(hasG)gsap.fromTo('#car2',{x:'60vw'},{x:0,ease:'power3.out',duration:1.4,scrollTrigger:{trigger:'#studio',start:'top 70%'}});
 
 /* ---------- Preis ---------- */
-const rn=$('#rn'),rm=$('#rm'),fg=$('#fg');for(let i=0;i<50;i++)fg.appendChild(document.createElement('i'));
+const rm=$('#rm');
 let shown=0;
-function calc(){const n=+rn.value,m=+rm.value;$('#pn').textContent=n;$('#pm').textContent=m+(m===1?' Monat':' Monate');
-  rn.style.setProperty('--p',(n-1)/49*100+'%');rm.style.setProperty('--p',(m-1)/11*100+'%');
-  $$('i',fg).forEach((x,i)=>x.classList.toggle('on',i<n));
-  const tgt=59*n*m;const o={v:shown};const f=v=>'ab '+Math.round(v).toLocaleString('de-DE')+' €';
+function calc(){const m=+rm.value;$('#pm').textContent=m+(m===1?' Monat':' Monate');
+  rm.style.setProperty('--p',(m-1)/11*100+'%');
+  const tgt=59*m;const o={v:shown};const f=v=>'ab '+Math.round(v).toLocaleString('de-DE')+' €';
   if(hasG)gsap.to(o,{v:tgt,duration:.6,ease:'power3.out',onUpdate:()=>{shown=o.v;$('#pt').textContent=f(o.v);}});else $('#pt').textContent=f(tgt);}
-rn.oninput=calc;rm.oninput=calc;calc();
+rm.oninput=calc;calc();
 
 /* ---------- Formular ---------- */
 const form=$('#book form');let mode='slot';
