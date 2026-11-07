@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>adlumi Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:ManropeLocal;src:url(img/Manrope.ttf) format("truetype");font-weight:200 800}
+:root{--bg:#0B0B0C;--ink:#F4F4F1;--mut:#a5a59f;--l:#DFFC42;--m:#2AECAD;--grad:linear-gradient(100deg,#DFFC42,#2AECAD)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:var(--ink);font-family:Manrope,ManropeLocal,system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:normal}
+
+/* Bühne: immer 16:9, skaliert */
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;background:var(--bg);overflow:hidden}
+.sl{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility 0s .8s}
+.sl.on{opacity:1;visibility:visible;transition:opacity .8s ease}
+.sl video.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sl .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.75) 30%,rgba(11,11,12,.05) 62%),linear-gradient(0deg,rgba(11,11,12,.75),transparent 35%)}
+.sl.right .shade{background:linear-gradient(270deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.75) 30%,rgba(11,11,12,.05) 62%),linear-gradient(0deg,rgba(11,11,12,.75),transparent 35%)}
+.sl .tx{position:absolute;left:120px;top:190px;width:820px}
+.sl.right .tx{left:auto;right:120px}
+.kick{display:inline-flex;align-items:center;gap:14px;font-size:22px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.kick:before{content:"";width:34px;height:3px;background:var(--grad)}
+h1,h2{font-weight:800;letter-spacing:-.04em;line-height:.98;margin-top:26px}
+h1{font-size:124px}
+h2{font-size:96px}
+.lead{font-size:32px;line-height:1.4;color:#d6d6d0;margin-top:30px;font-weight:600}
+.pts{list-style:none;margin-top:40px;display:grid;gap:20px}
+.pts li{display:flex;gap:20px;font-size:30px;font-weight:700;align-items:baseline}
+.pts li:before{content:"";flex:0 0 14px;height:14px;border-radius:50%;background:var(--grad);transform:translateY(-3px)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px;width:1120px}
+.steps div{padding:28px;border-radius:26px;background:rgba(20,20,22,.78);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1.5px rgba(244,244,241,.1)}
+.steps b{display:block;font-size:56px;font-weight:800;line-height:1}
+.steps span{display:block;margin-top:14px;font-size:26px;font-weight:700;line-height:1.3}
+.big{font-size:230px;font-weight:800;letter-spacing:-.06em;line-height:.9;margin-top:20px}
+.chips{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
+.chips span{height:58px;padding:0 26px;border-radius:99px;background:rgba(20,20,22,.8);box-shadow:inset 0 0 0 1.5px rgba(244,244,241,.14);display:flex;align-items:center;font-size:24px;font-weight:800}
+
+/* Animation der Inhalte */
+.sl .an{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.sl.on .an{opacity:1;transform:none}
+.sl.on .an:nth-child(2){transition-delay:.12s}.sl.on .an:nth-child(3){transition-delay:.24s}.sl.on .an:nth-child(4){transition-delay:.36s}.sl.on .an:nth-child(5){transition-delay:.48s}
+
+/* Lumi spricht */
+.say{position:absolute;left:120px;bottom:110px;width:900px;padding:24px 30px 26px;border-radius:28px 28px 28px 8px;background:rgba(11,11,12,.86);box-shadow:0 30px 60px rgba(0,0,0,.4),inset 0 0 0 1.5px rgba(223,252,66,.25);font-size:30px;font-weight:700;line-height:1.38;opacity:0;transform:translateY(16px);transition:opacity .35s,transform .35s}
+.sl.right .say{left:auto;right:120px}
+.say.on{opacity:1;transform:none}
+.say .who{display:flex;align-items:center;gap:10px;font-size:16px;letter-spacing:.18em;font-weight:800;color:var(--l);margin-bottom:8px}
+.say .who i{width:10px;height:10px;border-radius:50%;background:var(--l);animation:pl 1s infinite}
+@keyframes pl{50%{opacity:.25}}
+.say .w{color:rgba(244,244,241,.32);transition:color .12s}
+.say .w.s{color:var(--ink)}
+
+/* Kundenmotiv auf dem Schild */
+.signov{position:absolute;left:0;top:0;width:300px;height:350px;transform-origin:0 0;background:#ecebe4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;overflow:hidden;opacity:0;transition:opacity .4s}
+.signov.on{opacity:1}
+.signov img{max-width:84%;max-height:46%;object-fit:contain}
+.signov b{font-size:30px;line-height:1.05;font-weight:800;color:#111;text-align:center;letter-spacing:-.02em}
+.signov small{font-size:17px;font-weight:700;color:#333;text-align:center}
+.signov .fl{position:absolute;inset:0;background:#111;opacity:0}
+.signov:after{content:"";position:absolute;inset:0;background:radial-gradient(rgba(0,0,0,.07) 1px,transparent 1.3px) 0 0/3px 3px;mix-blend-mode:multiply}
+
+/* Rechner */
+.calc{margin-top:40px;width:760px;padding:30px 34px;border-radius:28px;background:rgba(20,20,22,.82);box-shadow:inset 0 0 0 1.5px rgba(244,244,241,.12)}
+.calc .r{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:24px;margin-top:10px}
+.calc .r span{color:var(--mut);font-size:18px;letter-spacing:.14em;text-transform:uppercase}
+.calc input{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:8px;background:#2a2a2e;margin:16px 0 18px;outline:none}
+.calc input::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;border-radius:50%;background:var(--l);cursor:grab}
+.calc input::-moz-range-thumb{width:34px;height:34px;border-radius:50%;background:var(--l);border:0}
+.calc .tot{font-size:64px;font-weight:800;letter-spacing:-.03em;margin-top:6px}
+.calc .fine{font-size:18px;color:var(--mut);margin-top:6px}
+
+#s7 .tx{width:520px;right:90px}#s7 h2{font-size:70px}#s7 .lead{font-size:26px}
+#s7 .shade{background:linear-gradient(270deg,rgba(11,11,12,.9) 0%,rgba(11,11,12,.7) 22%,transparent 40%),linear-gradient(0deg,rgba(11,11,12,.7),transparent 30%)}
+#s7 .say{width:760px}
+#s5 .tx{width:700px}#s5 h2{font-size:84px}
+#s8 .say{left:auto;right:120px;width:640px}
+/* Kontakt */
+.cta{display:flex;gap:40px;align-items:center;margin-top:50px}
+.qr{width:220px;height:220px;border-radius:24px;background:#fff;padding:14px}
+.qr img{width:100%;height:100%;image-rendering:pixelated}
+.ppl{display:grid;gap:18px;font-size:28px;font-weight:700}
+.ppl small{display:block;font-size:20px;color:var(--mut);font-weight:600}
+
+/* Logo + Steuerung */
+.brand{position:absolute;left:120px;top:70px;height:46px;z-index:5}
+.firm{position:absolute;right:120px;top:72px;z-index:5;font-size:20px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.bar{position:absolute;left:120px;right:120px;bottom:46px;height:4px;display:flex;gap:10px;z-index:5}
+.bar i{flex:1;background:rgba(244,244,241,.18);border-radius:4px;overflow:hidden}
+.bar i b{display:block;height:100%;width:0;background:var(--grad)}
+.ui{position:fixed;right:18px;bottom:16px;display:flex;gap:8px;z-index:20;opacity:.25;transition:opacity .3s}
+.ui:hover{opacity:1}
+.ui button{height:40px;min-width:40px;padding:0 14px;border-radius:99px;background:rgba(20,20,22,.85);box-shadow:inset 0 0 0 1px rgba(244,244,241,.18);font-size:14px;font-weight:800}
+.start{position:fixed;inset:0;z-index:30;background:rgba(11,11,12,.92);display:grid;place-items:center;text-align:center;cursor:pointer}
+.start .in{display:grid;justify-items:center;gap:22px}
+.start img.l{width:150px}
+.start b{font-size:46px;font-weight:800;letter-spacing:-.03em}
+.start span{font-size:18px;color:var(--mut);font-weight:600}
+.start .go{height:64px;padding:0 34px;border-radius:99px;background:var(--grad);color:#0B0B0C;font-weight:800;font-size:20px;display:flex;align-items:center}
+.hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;font-size:13px;color:rgba(244,244,241,.5);font-weight:700;letter-spacing:.05em;pointer-events:none;transition:opacity 1s}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 1 Hallo -->
+  <section class="sl" data-vo="v1" data-v="p1">
+    <video class="bg" src="media/p1.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an" id="hello">Hallo</span><h1 class="an">Werbung,<br>die <em class="g">mitfährt.</em></h1><p class="lead an">ePaper-Schilder auf Flottenfahrzeugen. Dein Motiv fährt jeden Tag durch die Stadt.</p></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 2 Problem -->
+  <section class="sl" data-vo="v2" data-v="p2">
+    <video class="bg" src="media/p2.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Das Problem</span><h2 class="an">Plakate hängen.<br>Online wird <em class="g">gescrollt.</em></h2>
+      <ul class="pts"><li class="an">Wochenlang dasselbe Motiv an einer Stelle</li><li class="an">Teuer, starr und schnell übersehen</li><li class="an">Online-Werbung wird weggewischt</li></ul></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 3 Lösung -->
+  <section class="sl" data-vo="v3" data-v="p3">
+    <video class="bg" src="media/p3.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Die Lösung</span><h2 class="an">Das <em class="g">ePaper-Schild</em><br>an der Hecktür.</h2><p class="lead an">Sieht aus wie bedrucktes Papier, ist aber digital. Montiert auf Fahrzeugen, die sowieso jeden Tag unterwegs sind.</p></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 4 So funktioniert's -->
+  <section class="sl" data-vo="v4" data-v="p4">
+    <video class="bg" src="media/p4.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">So funktioniert's</span><h2 class="an">Drei Schritte.<br><em class="g">Fertig.</em></h2>
+      <div class="steps an"><div><b class="g">01</b><span>Du schickst uns dein Motiv</span></div><div><b class="g">02</b><span>Wir spielen es digital aus</span></div><div><b class="g">03</b><span>Es läuft 3 Minuten am Stück, den ganzen Tag</span></div></div></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 5 Technik -->
+  <section class="sl" data-vo="v5" data-v="p5" id="s5">
+    <video class="bg" src="media/p5.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Die Technik</span><h2 class="an">Blendet nicht.<br><em class="g">Wirkt trotzdem.</em></h2>
+      <ul class="pts"><li class="an">Reflektiert Tageslicht wie Papier, kein eigenes Leuchten</li><li class="an">Je heller die Sonne, desto besser lesbar</li><li class="an">Für den Straßenverkehr: Gutachten liegt vor</li></ul></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 6 Flotten -->
+  <section class="sl" data-vo="v6" data-v="p6">
+    <video class="bg" src="media/p6.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Die Flotten</span><h2 class="an">Fährt dahin, wo<br><em class="g">deine Kunden sind.</em></h2>
+      <div class="chips an"><span>Pflege</span><span>Handwerk</span><span>Kurier</span><span>Taxi</span></div>
+      <p class="lead an">Du wählst Branche und Gebiet. Erster Flottenpartner: SIBU-Mobil mit 25 Fahrzeugen.</p></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 7 Dein Motiv -->
+  <section class="sl right" data-vo="v7" data-v="p7" id="s7">
+    <video class="bg" src="media/p7.mp4" muted loop playsinline preload="auto"></video>
+    <div class="signov" id="signov"><img id="sLogo" alt=""><b id="sTitle">Dein Motiv</b><small id="sSub">jeden Tag in deiner Stadt</small><div class="fl"></div></div>
+    <div class="shade"></div>
+    <div class="tx"><span class="kick an">Dein Motiv</span><h2 class="an" id="h7">So sieht <em class="g">dein Motiv</em> aus.</h2><p class="lead an">Neue Aktion? Ein Klick, und alle Schilder zeigen sie. Kein Druck, kein Bekleben.</p></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 8 Preis -->
+  <section class="sl" data-vo="v8" data-v="p8" id="s8">
+    <video class="bg" src="media/p8.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Der Preis</span><div class="big an"><em class="g">59 €</em></div><p class="lead an" style="margin-top:6px">ab, pro Fahrzeug und Monat. Keine Mindestflotte.</p>
+      <div class="calc an"><div class="r"><span>Fahrzeuge</span><b id="cn">10</b></div><input type="range" id="rn" min="1" max="50" value="10"><div class="r"><span>Monate</span><b id="cm">6</b></div><input type="range" id="rm" min="1" max="12" value="6"><div class="tot g" id="ct">ab 3.540 €</div><div class="fine">Der genaue Preis hängt von Gebiet, Laufzeit und Anzahl ab.</div></div></div>
+    <div class="say"></div>
+  </section>
+
+  <!-- 9 Los -->
+  <section class="sl" data-vo="v9" data-v="p9">
+    <video class="bg" src="media/p9.mp4" muted loop playsinline preload="auto"></video><div class="shade"></div>
+    <div class="tx"><span class="kick an">Und jetzt</span><h2 class="an">Lass uns deinen<br><em class="g">Slot sichern.</em></h2>
+      <div class="cta an"><div class="qr"><img src="img/qr.png" alt="QR-Code zu ad-lumi.com"></div>
+        <div class="ppl"><div>Volkan Cayli<small>Geschäftsführer</small></div><div>Ilias Albay<small>Geschäftsführer · ilias@ad-lumi.com</small></div><div class="g" style="font-weight:800">ad-lumi.com</div></div></div></div>
+    <div class="say"></div>
+  </section>
+
+  <img class="brand" src="img/logo.png" alt="adlumi">
+  <div class="firm" id="firm"></div>
+  <div class="bar" id="bar"></div>
+</div>
+
+<div class="ui"><button id="bPrev" title="Zurück (←)">←</button><button id="bSnd" title="Ton an/aus (M)">Ton an</button><button id="bAuto" title="Automatisch weiter (A)">Auto aus</button><button id="bFs" title="Vollbild (F)">Vollbild</button><button id="bNext" title="Weiter (→)">→</button></div>
+<div class="hint" id="hint">Weiter mit Pfeiltaste, Leertaste oder Klick · F für Vollbild</div>
+<div class="start" id="start"><div class="in"><img class="l" src="img/lumi.png" alt=""><b id="startT">Lumi ist bereit.</b><span>Ton an, Vollbild empfohlen</span><div class="go">Pitch starten</div></div></div>
+
+<audio id="vo" preload="auto"></audio>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* Texte, die Lumi spricht (gleich wie in den Audiodateien) */
+const VO={
+ v1:"Hi, ich bin Lumi! Ich male Werbung. Und zwar da, wo sie wirklich jeder sieht.",
+ v2:"Plakate hängen wochenlang gleich rum, und online wird einfach weggescrollt. Ehrlich? Langweilig.",
+ v3:"Deshalb gibt's adlumi. Ein ePaper-Schild hinten an der Tür von Flottenfahrzeugen. Ich mal dein Motiv drauf. Zack.",
+ v4:"Die Fahrzeuge sind sowieso jeden Tag in der Stadt unterwegs. Dein Motiv fährt einfach mit, drei Minuten am Stück, immer wieder.",
+ v5:"Ich leuchte nicht, ich reflektiere, wie Papier. Deshalb blende ich niemanden. Und in der Sonne bin ich am besten zu lesen.",
+ v6:"Pflegedienste, Handwerker, Kuriere. Die fahren genau da, wo deine Kunden wohnen und einkaufen.",
+ v7:"Neue Aktion nächste Woche? Ein Klick, und alle Schilder zeigen sie. Ohne Druck, ohne Bekleben.",
+ v8:"Und jetzt kommt's: ab 59 Euro pro Fahrzeug und Monat.",
+ v9:"Also, wie viele Fahrzeuge sollen für dich fahren? Lass uns deinen Slot sichern!"};
+/* Personalisierung über den Link: ?firma=...&logo=...&titel=...&zeile=... */
+const P=new URLSearchParams(location.search);
+const firma=P.get('firma'),logo=P.get('logo'),titel=P.get('titel'),zeile=P.get('zeile');
+if(firma){$('#hello').textContent='Hallo '+firma;$('#firm').textContent='Für '+firma;$('#startT').textContent='Lumi ist bereit für '+firma+'.';$('#h7').innerHTML='So sieht <em class="g">'+esc(firma)+'</em> auf der Straße aus.';}
+$('#sTitle').textContent=titel||firma||'Dein Motiv';
+$('#sSub').textContent=zeile||(firma?'jeden Tag in deiner Stadt':'jeden Tag in deiner Stadt');
+if(logo){$('#sLogo').src=logo;$('#sLogo').onerror=()=>$('#sLogo').remove();}else $('#sLogo').remove();
+
+/* Bühne skalieren */
+const st=$('#stage');
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`scale(${k}) translate(-50%,-50%)`;st.style.transform=`translate(-50%,-50%) scale(${k})`;st.style.transformOrigin='center center';st.style.left='50%';st.style.top='50%';}
+fit();addEventListener('resize',fit);
+
+const S=$$('.sl'),bar=$('#bar');S.forEach(()=>{const i=document.createElement('i');i.innerHTML='<b></b>';bar.appendChild(i);});
+const vo=$('#vo');let cur=-1,sound=true,auto=false,autoT=null;
+
+function words(el,key){const ws=VO[key].split(' ');el.innerHTML='<span class="who"><i></i>LUMI</span>'+ws.map(w=>`<span class="w">${esc(w)}</span>`).join(' ');return $$('.w',el);}
+let ws=[],sayEl=null;
+function go(n){
+  n=Math.max(0,Math.min(S.length-1,n));if(n===cur)return;
+  if(cur>=0){S[cur].classList.remove('on');const v=$('video.bg',S[cur]);setTimeout(()=>v.pause(),800);}
+  cur=n;const s=S[n];s.classList.add('on');
+  const v=$('video.bg',s);v.currentTime=0;v.play().catch(()=>{});
+  $$('i b',bar).forEach((b,i)=>b.style.width=i<n?'100%':'0');
+  sayEl=$('.say',s);ws=words(sayEl,s.dataset.vo);sayEl.classList.remove('on');
+  vo.pause();vo.src='vo/'+s.dataset.vo+'.mp3';vo.muted=!sound;
+  clearTimeout(autoT);
+  setTimeout(()=>{if(cur!==n)return;sayEl.classList.add('on');vo.currentTime=0;vo.play().catch(()=>{fake(n)});},700);
+  if(s.id==='s7')setTimeout(()=>flashSign(),1400);
+}
+/* Wenn kein Ton: Untertitel trotzdem laufen lassen */
+function fake(n){const t0=performance.now();const dur=VO[S[n].dataset.vo].split(' ').length*.38;(function f(){if(cur!==n)return;const p=(performance.now()-t0)/1000/dur;tick(p);if(p<1.05)requestAnimationFrame(f);else done(n);})();}
+function tick(p){const k=Math.round(p*ws.length);ws.forEach((w,i)=>w.classList.toggle('s',i<k));$('#bar').children[cur].firstChild.style.width=Math.min(100,p*100)+'%';}
+vo.addEventListener('timeupdate',()=>{if(vo.duration)tick(vo.currentTime/vo.duration);});
+vo.addEventListener('ended',()=>done(cur));
+function done(n){tick(1);if(auto&&n===cur&&n<S.length-1)autoT=setTimeout(()=>go(cur+1),1800);}
+
+/* Kundenmotiv auf das Schild legen (Perspektive) */
+const SIGN={w:1920,h:1080,q:[[0,0],[0,0],[0,0],[0,0]]};
+function homog(src,dst){const A=[],b=[];for(let i=0;i<4;i++){const [x,y]=src[i],[u,v]=dst[i];A.push([x,y,1,0,0,0,-u*x,-u*y]);b.push(u);A.push([0,0,0,x,y,1,-v*x,-v*y]);b.push(v);}
+  for(let i=0;i<8;i++){let m=i;for(let j=i+1;j<8;j++)if(Math.abs(A[j][i])>Math.abs(A[m][i]))m=j;[A[i],A[m]]=[A[m],A[i]];[b[i],b[m]]=[b[m],b[i]];for(let j=i+1;j<8;j++){const f=A[j][i]/A[i][i];for(let k=i;k<8;k++)A[j][k]-=f*A[i][k];b[j]-=f*b[i];}}
+  const h=[];for(let i=7;i>=0;i--){let s=b[i];for(let k=i+1;k<8;k++)s-=A[i][k]*h[k];h[i]=s/A[i][i];}return [h[0],h[3],0,h[6],h[1],h[4],0,h[7],0,0,1,0,h[2],h[5],0,1];}
+const so=$('#signov');
+const SIGNQ=[[391,183],[913,191],[913,791],[384,804]];
+function placeSign(){so.style.transform=`matrix3d(${homog([[0,0],[300,0],[300,350],[0,350]],SIGNQ).join(',')})`;so.classList.add('on');}
+function flashSign(){const fl=$('.fl',so);fl.animate([{opacity:0},{opacity:1},{opacity:0},{opacity:.85},{opacity:0}],{duration:520});}
+
+/* Rechner */
+const rn=$('#rn'),rm=$('#rm');function calc(){const n=+rn.value,m=+rm.value;$('#cn').textContent=n;$('#cm').textContent=m;$('#ct').textContent='ab '+(59*n*m).toLocaleString('de-DE')+' €';}
+rn.oninput=calc;rm.oninput=calc;calc();
+[rn,rm].forEach(i=>['click','keydown','pointerdown'].forEach(e=>i.addEventListener(e,ev=>ev.stopPropagation())));
+
+/* Steuerung */
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();go(cur+1);}
+  else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(cur-1);}
+  else if(e.key==='f'||e.key==='F')fs();else if(e.key==='m'||e.key==='M')snd();else if(e.key==='a'||e.key==='A')au();
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(S.length-1);else if(e.key==='r'||e.key==='R'){const c=cur;cur=-1;go(c);}});
+st.addEventListener('click',e=>{if(e.target.closest('.calc'))return;const x=e.clientX/innerWidth;go(x<.25?cur-1:cur+1);});
+let tx0=null;addEventListener('touchstart',e=>tx0=e.touches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(tx0==null)return;const d=e.changedTouches[0].clientX-tx0;if(Math.abs(d)>50)go(cur+(d<0?1:-1));tx0=null;});
+function snd(){sound=!sound;vo.muted=!sound;$('#bSnd').textContent=sound?'Ton an':'Ton aus';}
+function au(){auto=!auto;$('#bAuto').textContent=auto?'Auto an':'Auto aus';if(auto&&vo.ended)go(cur+1);}
+function fs(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();}
+$('#bPrev').onclick=()=>go(cur-1);$('#bNext').onclick=()=>go(cur+1);$('#bSnd').onclick=snd;$('#bAuto').onclick=au;$('#bFs').onclick=fs;
+$('#start').onclick=()=>{$('#start').remove();fs();go(0);setTimeout(()=>$('#hint').style.opacity=0,6000);};
+if(P.get('auto')==='1'){auto=true;$('#bAuto').textContent='Auto an';}
+placeSign();addEventListener('resize',placeSign);
+})();
+</script>
+</body>
+</html>
